@@ -1,16 +1,19 @@
-"""Главный файл запуска Telegram-бота."""
 import telebot
 import config
 import db
 import handlers
 
+bot = telebot.TeleBot(config.TOKEN)
 
-db.init_db()
-db.load_test_data()
-
-telegram_bot = telebot.TeleBot(config.TOKEN)
-
-handlers.register_handlers(telegram_bot)
+def main():
+    print("Проверка базы данных...")
+    db.init_db()  
+    
+    print("Регистрация хэндлеров...")
+    handlers.register_handlers(bot)
+    
+    print("Бот успешно запущен и готов к работе!")
+    bot.polling(none_stop=True)
 
 if __name__ == "__main__":
-    telegram_bot.polling()
+    main()
